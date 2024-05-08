@@ -1,8 +1,8 @@
 -- Create a new database
-CREATE DATABASE IF NOT EXISTS spring_mysql;
+CREATE DATABASE IF NOT EXISTS cocolang;
 
 -- Use the created database
-USE spring_mysql;
+USE cocolang;
 
 -- Create a new table
 
@@ -70,28 +70,50 @@ CREATE TABLE COMMONS_CODE
 	PRIMARY KEY (COMMON_CODE_ID)
 ) COMMENT = '공통코드';
 
+CREATE TABLE COMPANIES (
+    COMPANY_ID INT PRIMARY KEY,
+    COMPANY_NAME VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE CAR_INFORS (
+    CAR_NAME VARCHAR(255) NOT NULL,
+    YEAR INT NOT NULL,
+    CAR_INFOR_ID INT PRIMARY KEY,
+    COMPANY_ID INT,
+    FOREIGN KEY (COMPANY_ID) REFERENCES COMPANIES(COMPANY_ID)
+);
+
+CREATE TABLE factorys (
+    FACTORY_ID INT PRIMARY KEY,
+    FACTORY_NAME VARCHAR(255) NOT NULL,
+    LOCATION VARCHAR(255),
+    COMPANY_ID INT,
+    FOREIGN KEY (COMPANY_ID) REFERENCES COMPANIES(COMPANY_ID)
+);
+
 -- Insert values into the table
 INSERT INTO AUTH_NAMES (AUTH_NAME, UNIQUE_ID)
 VALUES
-  ('ADMIN', 'ADMIN_ID'),
-  ('MANAGER', 'MANAGER_ID'),
-  ('CUSTOMER', 'CUSTOMER_ID');
+  ('ADMIN', 'ROLE_ADMIN'),
+  ('MANAGER', 'ROLE_MANAGER'),
+  ('MEMBER', 'ROLE_MEMBER');
 
 INSERT INTO USERS (UNIQUE_ID, NAME, PASSWORD, EMAIL, JOB)
 VALUES
-  ('USER_ID_1', 'John Doe', 'password123', 'john.doe@example.com', 'Developer'),
-  ('USER_ID_2', 'Jane Smith', 'password456', 'jane.smith@example.com', 'Manager'),
-  ('USER_ID_3', 'Bob Johnson', 'password789', 'bob.johnson@example.com', 'Customer'),
-  ('USER_ID_4', 'Alice Williams', 'passwordabc', 'alice.williams@example.com', 'Admin');
+  ('USER_ID_1', 'John Doe', '$2a$10$yTdTDAA/vogepOFCO3WDa.n41.ZoQQH0TlL8WV2J3b8qbF1uU.n5.', 'john.doe@example.com', 'Developer'),
+  ('USER_ID_2', 'Jane Smith', '$2a$10$yTdTDAA/vogepOFCO3WDa.n41.ZoQQH0TlL8WV2J3b8qbF1uU.n5.', 'jane.smith@example.com', 'Manager'),
+  ('USER_ID_3', 'Bob Johnson', '$2a$10$yTdTDAA/vogepOFCO3WDa.n41.ZoQQH0TlL8WV2J3b8qbF1uU.n5.', 'bob.johnson@example.com', 'Member'),
+  ('USER_ID_4', 'Alice Williams', '$2a$10$yTdTDAA/vogepOFCO3WDa.n41.ZoQQH0TlL8WV2J3b8qbF1uU.n5.', 'alice.williams@example.com', 'Admin');
 
 INSERT INTO AUTHS (UNIQUE_ID_USERS, UNIQUE_ID_AUTH_NAMES)
 VALUES
-  ('USER_ID_1', 'ADMIN_ID'),
-  ('USER_ID_2', 'MANAGER_ID'),
-  ('USER_ID_3', 'CUSTOMER_ID'),
-  ('USER_ID_4', 'ADMIN_ID'),
-  ('USER_ID_4', 'CUSTOMER_ID'),
-  ('USER_ID_4', 'MANAGER_ID');
+  ('USER_ID_1', 'ROLE_ADMIN'),
+  ('USER_ID_2', 'ROLE_MANAGER'),
+  ('USER_ID_3', 'ROLE_MEMBER'),
+  ('USER_ID_4', 'ROLE_ADMIN'),
+  ('USER_ID_4', 'ROLE_MEMBER'),
+  ('USER_ID_4', 'ROLE_MANAGER');
+
 
 insert into COMMONS_CODE 
 (COMMON_CODE_ID,NAME,ORDER_NUMBER,ATTRIBUTION_1,ATTRIBUTION_2,DESCRIPTION,SYSTEM_CODE_YN,USE_YN,PARENT_COMMON_CODE_ID,REGISTER_SEQ,REGISTRY_DATE,MODIFIER_SEQ,MODIFY_DATE) 
@@ -105,3 +127,33 @@ select 'System_Code_YN','Sytem Yes or No',1,NULL,NULL,'Sytem Using Yes or No','S
 select 'System_Code_Yes','Yes',1,NULL,NULL,'Sytem Using Yes','System_Code_Yes','Yes','System_Code_YN','UUID-1111-1111111',now(),'UUID-1111-1111111',now() from dual union all 
 select 'System_Code_No','No',2,NULL,NULL,'Sytem Using No','System_Code_Yes','Yes','System_Code_YN','UUID-1111-1111111',now(),'UUID-1111-1111111',now() from dual 
 ; 
+
+INSERT INTO COMPANIES (COMPANY_ID, COMPANY_NAME) VALUES (1, 'Hyundai');
+INSERT INTO COMPANIES (COMPANY_ID, COMPANY_NAME) VALUES (2, 'Tesla');
+INSERT INTO COMPANIES (COMPANY_ID, COMPANY_NAME) VALUES (3, 'Toyota');
+
+INSERT INTO CAR_INFORS (CAR_NAME, YEAR, CAR_INFOR_ID, COMPANY_ID) VALUES 
+('Hyundai Sonata', 2020, 1, 1),
+('Tesla Model S', 2021, 2, 2),
+('Toyota Camry', 2019, 3, 3),
+('Kia Optima', 2018, 4, 1),
+('Tesla Model X', 2021, 5, 2),
+('Toyota Corolla', 2018, 6, 3),
+('Hyundai Elantra', 2019, 7, 1),
+('Kia Sorento', 2020, 8, 1),
+('Tesla Model 3', 2021, 9, 2),
+('Toyota Prius', 2017, 10, 3),
+('Hyundai Tucson', 2021, 11, 1),
+('Kia Sportage', 2019, 12, 1),
+('Tesla Model Y', 2021, 13, 2),
+('Toyota RAV4', 2020, 14, 3),
+('Hyundai Santa Fe', 2018, 15, 1),
+('Kia Telluride', 2021, 16, 1),
+('Tesla Roadster', 2022, 17, 2),
+('Toyota Highlander', 2019, 18, 3),
+('Hyundai Kona', 2020, 19, 1),
+('Kia Forte', 2018, 20, 1);
+
+INSERT INTO factorys (FACTORY_ID, FACTORY_NAME, LOCATION, COMPANY_ID) VALUES (1, 'Hyundai Ulsan Plant', 'Ulsan', 1);
+INSERT INTO factorys (FACTORY_ID, FACTORY_NAME, LOCATION, COMPANY_ID) VALUES (2, 'Tesla Fremont Factory', 'California', 2);
+INSERT INTO factorys (FACTORY_ID, FACTORY_NAME, LOCATION, COMPANY_ID) VALUES (3, 'Toyota Kentucky Plant', 'Kentucky', 3);

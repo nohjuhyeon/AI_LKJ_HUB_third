@@ -20,14 +20,14 @@ WORKDIR /apps
 ARG APP_DIR_NAME_FASTAPI
 
 # Clone the Git repository. Here we dynamically specify the repository name using the variable defined earlier.
-RUN git clone -b data_engineers https://github.com/gocolab/co_templates ${APP_DIR_NAME_FASTAPI}
+RUN git clone -b main https://github.com/nohjuhyeon/AI_LKJ_hubs_fastapi ${APP_DIR_NAME_FASTAPI}
 
 # Changes the working directory to /apps/${REPO_NAME}. This uses the variable to dynamically set the directory path.
 WORKDIR /apps/${APP_DIR_NAME_FASTAPI}
 
 RUN pip install --no-cache-dir -r ./requirements.txt
 
-RUN rm -rf .git
+# RUN rm -rf .git
 
 # setup springboots
 WORKDIR /apps
@@ -35,7 +35,7 @@ WORKDIR /apps
 ARG APP_DIR_NAME_SPRINGBOOT
 
 # Clone the Git repository. Here we dynamically specify the repository name using the variable defined earlier.
-RUN git clone -b main https://github.com/yojulab/learn_springboot3_gradle_security ${APP_DIR_NAME_SPRINGBOOT}
+RUN git clone -b main https://github.com/nohjuhyeon/AI_LKJ_hubs_spring ${APP_DIR_NAME_SPRINGBOOT}
 
 # Changes the working directory to /app/${REPO_NAME}. This uses the variable to dynamically set the directory path.
 WORKDIR /apps/${APP_DIR_NAME_SPRINGBOOT}
